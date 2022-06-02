@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="parent-post">
+    <div class="card mb-4 mx-auto shadow shadow-lg post">
+        <div class="card-header"><i><small class="text-muted">posted by <a href="{%url 'user' pk=post.author.id %}">/{{post.author}}</a></small></i>
+        </div>
+        {% if post.cover_img%}
+            <img src="{%url 'media'%}{{post.cover_img}}" style="max-height:400px" class="card-img-top">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+            <p class="card-text">{{post.body}}</p>
+            <p class="card-text"><small class="text-muted">Last update {{post.lastupdate}} </small></p>
+        </div>
+    </div>
+</div>
+{% for note in notes %}
+<div class="mx-auto mb-2 shadow shadow-sm border-light card post">
+    <div class="card-body">
+    <div class="d-flex justify-content-end">
+        <div style="margin-right: auto;">
+            <h6 class="card-title"><i><small class="text-muted">qoute from <a href="#">/{{note.user}}</a></small></i></h6>
+        </div>
+        <div>
+            <i><small class="text-muted">qouted at {{note.lastupdate}}</a></small></i>
+        </div>
+    </div>
+   <q>{{note.comment_body}}</q>  
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

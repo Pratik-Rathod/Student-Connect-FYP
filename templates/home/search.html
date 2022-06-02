@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<br>
+
+<div class="mx-auto" style="max-width: 600px;">
+    <h5>{{post_objs|length}} search results for - <q><i>{{q}}</i></q> </h5>
+</div>
+<hr>
+{% for post in post_objs%}
+{% load static %}
+<div class="parent-post">
+  <div class="card mb-2 mx-auto shadow shadow post">
+    <div class="card-header"><i><small class="text-muted">posted by <a href="{%url 'user' pk=post.author.pk%}">/{{post.author}}</a></small></i></div>
+    <div class="card-body">
+      <h5 class="card-title">{{post.title}}</h5>
+      <!-- <img src="https://picsum.photos/i
+          d/  237/200/300" style="max-height:400px" class="card-img-top"> -->
+
+      <p class="card-text">{{post.body}}</p>
+      <p class="card-text"><small class="text-muted">Last update {{post.lastupdate}} </small></p>
+    </div>
+    <div class="card-footer d-flex justify-content-center">
+      <div>
+        <a href="{%url 'user' pk=post.author.pk%}#{{post.id}}">View</a>
+      </div>
+    </div>
+<!-- 
+    <div class="card-footer d-flex justify-content-end">
+      <div style="display:inline; margin-right:1rem">
+        <form class="addnote" id="post-note{{post.id}}" action="addnote/" method="post">
+          {% csrf_token %}
+          <input name="postid" type="hidden" value="{{post.id}}">
+          <input type="text" name="note" placeholder="leave a note!" style="border: 1px dark;"
+            class="form-control noteaddfield" required>
+        </form>
+      </div>
+      <div>
+        <button form="post-note{{post.id}}" type="submit" class="btn btn-outline-primary" value="add">add note!</button>
+      </div>
+      <div>
+        <a href="post/{{post.id}}/comments" class="link-secondary btn btn-link"
+          style="text-decoration: none;"><small>view notes</small></a>
+      </div>
+      <div>
+        <label>
+          <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote" value="true">
+          <img src="{% static 'img/icons/upvote-svgrepo-com.svg' %}" name="upvote" alt="down vote">
+        </label>
+        <label>
+          <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote" value="false">
+          <img src="{% static 'img/icons/downvote-svgrepo-com.svg' %}" data-upvote="false" name="downvote"
+            alt="up vote">
+        </label>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endblock%}

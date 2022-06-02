@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{%block body%}
+<br>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert">
+        <strong>{{ message.tags }}</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="shadow-lg card mr-auto pr-10 p-3 lgncrd row g-3 align-items-center" style="max-width: 405px;">
+    <div class="card-body">
+        <h2 class="card-title">Welcome back!</h5>
+            <br>
+            <form method="POST" action="/loginhandler/" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="userid">User ID</label>
+                    <input name="usermame" minlength="3" type="text" class="form-control shadow-sm" id="userid"
+                        aria-describedby="useridHelp" placeholder="@username" required>
+                    <small id="useridHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        Enter valid username.
+                    </div>
+                    <div id ="validationServerUsernameFeedback" class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input name="password" type="password" minlength="4" class="form-control shadow-sm" id="exampleInputPassword1"
+                        placeholder="Password" required>
+                        <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                            Password must be over 4 characters.
+                        </div>
+                        <div id ="validationServerPasswordFeedback" class="valid-feedback">
+                            Looks good!
+                        </div>
+                </div>
+                <br>
+
+                <button type="submit" class=" shadow btn btn-outline-primary btn"
+                    style="width: 100%;"><b>Login</b><span></button>
+
+                <label class="form-text text-muted"><a class="text-decoration-none" href="{% url 'password_reset'%}"> forgot
+                        password?</a> </label>
+
+                <br>
+                <br>
+                <label class="form-text text-muted">New here ? <a class="text-decoration-none"
+                        href="{% url 'register'%}"> Click here to register</a> </label>
+                <br>
+                
+            </form>
+    </div>
+</div>
+</div>
+{%endblock%}

@@ -1,0 +1,216 @@
+:root {
+  font-family: 'Nunito', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.post,
+.notes {
+  max-width: 600px;
+}
+
+.card-meta {
+  display: flex;
+}
+
+.card-meta>div {
+  flex: 1;
+}
+
+.material-symbols-rounded {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 700,
+    'GRAD' 0,
+    'opsz' 48
+}
+
+nav {
+  font-size: large;
+  padding: 10px;
+  display: flex;
+  padding-inline-start: 50px;
+  padding-inline-end: 50px;
+  align-content: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: rgb(48, 46, 46);
+}
+
+.ul-nav-links {
+
+  text-align: center;
+}
+
+nav .main-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+nav .main-nav li a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: white;
+}
+
+.button {
+  display: inline;
+  padding: 4px 10px;
+  border-radius: 10px;
+  background-color: blue;
+}
+
+nav b {
+  color: aliceblue;
+}
+
+#brand {
+  color: #2962ff;
+}
+
+.jumbo {
+  padding: 3rem 2rem;
+  background-color: #e9ecef;
+  border-radius: .3rem;
+  margin-bottom: 2rem;
+  margin: 0rem min(10rem, 10%);
+}
+
+.profilecard {
+  border-radius: 0 0 40px 40px;
+
+  border-style: dashed;
+
+}
+
+.profileavtar {
+
+  position: absolute;
+  left: 50%;
+  bottom: 25%;
+  /* background-image: url('https://avatars.dicebear.com/api/pixel-art/asd.svg'); */
+  z-index: 1000;
+  width: 7rem;
+  cursor: pointer;
+  height: 7rem;
+  border-radius: 100%;
+  background-size: 100% 100%;
+  transform: translateX(-50%);
+}
+
+#username {
+  position: absolute;
+  left: 0;
+  font-size: large;
+  font-style: italic;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  box-shadow: 0px 2px 9px 10px rgba(255, 255, 255, .6);
+  background: rgba(255, 255, 255, .6);
+}
+
+#followbtn {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  
+  transform: translateX(-50%);
+}
+
+#saveprofileimgsbtn {
+  position: absolute;
+  right: 0;
+}
+
+.profilecover,
+.profileavtar {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.profilecover {
+  border-radius: 0 0 40px 40px;
+  background-size: cover;
+  text-align: center;
+  position: relative;
+  height: 200px;
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://picsum.photos/seed/54ol/1200/200'); */
+}
+
+.lgncrd {
+  border-radius: 30px;
+  border-style: dashed;
+  box-shadow: 2px 2px 15px gray;
+  padding: 40px;
+  margin: 0 auto;
+  float: none;
+  margin-bottom: 10px;
+}
+
+#post-anything-card {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  border-radius: 30px;
+  border-style: dashed;
+}
+
+.logincard {
+  background-color: #2962ff;
+  display: flex;
+  width: 100%;
+  height: 100px;
+}
+
+/* custom check */
+[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=checkbox]+img {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* CHECKED STYLES */
+[type=checkbox]:checked+img[name=upvote] {
+  filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%)
+}
+
+img[name=upvote]:hover {
+  filter: invert(22%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%)
+}
+
+[type=checkbox]:checked+img[name=downvote] {
+  filter: invert(100%) grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+  /* filter: sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%) */
+}
+
+img[name=downvote]:hover {
+  filter: invert(50%) grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+  /* filter: sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%) */
+}
+
+.userlogs {
+  z-index: 1;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}

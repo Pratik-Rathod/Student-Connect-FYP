@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{%block body%}
+<!-- The Modal -->
+<div class="modal fade shadow shodow-lg" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="jumbotron">
+          <h1 class="h-6">Hello, there!</h1>
+          <p class="lead">Let's join amazing golden world of student where you can get introduce with something new !</p>
+          <p class="lead d-flex justify-content-center">
+            <a class="btn btn-outline-primary" style="width: 100%;" href="{%url 'login'%}" ata-bs-dismiss="modal" role="button">Register</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% load static %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="userlogs alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+  <strong>{{ message.tags }}</strong>{{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
+{% load crispy_forms_tags %}
+<div id="post-anything">
+  <div id="post-anything-card" class="card m-3 p-3 mx-auto shadow shadow-sm" style="max-width: 500px;">
+    <form class="form-control" action="post" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ postform|crispy }}
+      <!-- <input type="text" data-role="tagsinput" value="jQuery,Script,Net" style="display: none;">  -->
+      <small class="text-muted hideres ms-2"><i>add image!if you want</i></small>
+      <div class="d-flex justify-content-end">
+        <button id="postsubmit" type="submit" class="btn hideres" value="post!"><span class="material-symbols-rounded">
+            send
+          </span></button>
+      </div>
+    </form>
+  </div>
+</div>
+{% for post in post_objs%}
+
+<div class="parent-post">
+  <div class="card mb-2 mx-auto shadow shadow post">
+    
+    <div class="card-header">
+      <i><small class="text-muted">posted by <a href="user/{{post.author.id}}">/{{post.author}}</a></small></i>
+      <!-- <br>
+      <span class="badge rounded-pill bg-primary">Primary</span>
+      <span class="badge rounded-pill bg-secondary">Secondary</span>
+      <span class="badge rounded-pill bg-success">Success</span>
+      <span class="badge rounded-pill bg-danger">Danger</span> -->
+    </div>
+    {% if post.cover_img%}
+    <img loading="lazy" src="{%url 'media'%}{{post.cover_img}}" style="max-height:400px" class="card-img-top">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{post.title}}</h5>
+
+      <p class="card-text">{{post.body|linebreaks}}</p>
+      <p class="card-text"><small class="text-muted">Last update {{post.lastupdate}} </small></p>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end">
+      <div style="display:inline; margin-right:1rem">
+        <form class="addnote" id="post-note{{post.id}}" action="addnote/" method="post">
+          {% csrf_token %}
+          <input name="postid" type="hidden" value="{{post.id}}">
+          <input autocomplete="off"  type="text" name="note" placeholder="leave a note!" style="border: 1px dark;"
+            class="form-control noteaddfield" required>
+        </form>
+      </div>
+      <div>
+        <button id="postibtn{{post.id}}" form="post-note{{post.id}}" type="submit" class="btn btn-outline-primary"
+          value="add" style=" font-size: 1em">add note!</button>
+      </div>
+      <div>
+        <a href="post/{{post.id}}/comments" class="link-secondary btn btn-link"
+          style="text-decoration: none;"><small>view notes</small></a>
+      </div>
+      <div>
+        <label>
+          <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote" value="true"
+          {% for key,values in upvotelist.items%}
+                        {% if key == post %}
+                            {% if values.response == 'true'%}
+                                checked
+                            {% endif %}
+                        {% else %}
+                        {% endif %}
+                    {% endfor %}>
+          <img src="{% static 'img/icons/upvote-svgrepo-com.svg' %}" name="upvote" alt="down vote">
+        </label>
+        <label>
+          <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote" value="false"
+          {% for key,values in upvotelist.items%}
+                        {% if key == post %}
+                            {% if values.response == 'false'%}
+                                checked
+                            {% endif %}
+                        {% else %}
+                        {% endif %}
+                    {% endfor %}
+          >
+          <img src="{% static 'img/icons/downvote-svgrepo-com.svg' %}" data-upvote="false" name="downvote"
+            alt="up vote">
+        </label>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+{% if user.is_authenticated %}
+<script>
+  $(function () {
+  
+    
+    $("#id_cover_img").addClass("form-control")
+
+    $(".hideres").hide()
+
+    $("#id_cover_img").hide()
+    $("#posttitle").focus(function () {
+      $(this).attr('placeholder', "Title here!")
+    })
+
+    $("#posttitle").focusout(function () {
+      $(this).attr('placeholder', "post anything")
+    })
+
+    $("#posttitle").on('input', function () {
+      if ($("#posttitle").val() != "") {
+        $(this).attr("placeholder", "title")
+        $(".hideres").fadeIn()
+        $("#id_cover_img").fadeIn()
+        $("#post-anything-card").addClass("shadow shadow-lg")
+
+      } else {
+        $(this).attr("placeholder", "post anything")
+        $("#post-anything-card").removeClass("shadow shadow-lg")
+        $(".hideres").fadeOut()
+        $("#id_cover_img").fadeOut()
+      }
+    });
+
+    $("#posttitle").focusout(function () {
+    });
+
+    $(".addnote").submit(function (e) {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      e.preventDefault();
+      var form = $(this)
+      var url = form.attr('action');
+
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+
+      $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      })
+      form_json_obj = form.serializeArray()
+      jsn_str = JSON.stringify(form_json_obj)
+
+      $.ajax(
+        {
+          type: "POST",
+          url: url,
+          data: {
+            'form': jsn_str,
+          },
+          success: function () {
+            console.log("noted!");
+            $(':focus').val("")
+            $(':focus').blur()
+            var a = form[0].elements[1].value;
+            var btnid = $("#postibtn" + a);
+            btnid.html("added !");
+            btnid.toggleClass("btn-outline-primary", "btn-outline-success");
+            btnid.prop('disabled', true);
+            setTimeout(function () {
+              btnid.toggleClass("btn-outline-primary", "btn-outline-success");
+              btnid.prop('disabled', false);
+              btnid.html("add note");
+            }, 1500);
+          }
+        }
+      )
+    });
+
+    $(".vote").change(function () {
+      if ($(this).prop('checked'))
+        resp = $(this).val()
+      else
+        resp = 'unset'
+
+      catid = $(this).attr("data-catid")
+
+      $.ajax(
+        {
+          type: "GET",
+          url: "/vote",
+          data: {
+            post_id: catid,
+            res: resp
+          },
+          success: function (data) {
+            console.log("success")
+
+          }
+        })
+    });
+  });
+</script>
+{% else %}
+<script>
+  $(document).ready(function () {
+    function func() {
+      $('#myModal').modal('show');
+    }
+    
+    window.setTimeout(func, 3000); 
+    
+    $("#post-anything").css("display", "none")
+    $(".vote").change(function () {
+      window.location.href = "login_page";
+    });
+
+    $(".noteaddfield").focus(function () {
+      window.location.href = "login_page";
+    });
+  });
+
+</script>
+
+{%endif%}
+
+{%endblock%}

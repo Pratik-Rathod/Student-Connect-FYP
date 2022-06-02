@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% load static %}
+
+<div class="mx-auto" style="max-width: 600px;">
+    <p class="h6">Added users {{followedusercount}} </p>
+</div>
+<br>
+
+{% for userinfo in followedUserInfo%}    
+<div class="mb-3 mx-auto shadow  align-items-center shadow post d-flex bd-highlight rounded" style="max-width: 400px;">
+    <div class="p-2 flex-grow-1 bd-highlight">
+        <img src="{{userinfo.avtarImg}}"
+            class=" shadow rounded-circle" alt="avtar" width="50px" height="50px">
+    </div>
+    <div class="p-2 flex-grow-1 bd-highlight">{{userinfo.User}}</div>
+    <a href="{%url 'user' pk=userinfo.User.pk%}" class="p-2 me-4 btn btn-outline-primary flex-grow-1  bd-highlight">view profile</a>
+</div>
+{% endfor %}
+    
+
+<br>
+<div class="mx-auto" style="max-width: 600px;">
+    <p class="h6">Post from added users </p>
+</div>
+<hr>
+{% for post in post_obj%}
+
+<div class="parent-post">
+    <div class="card mb-2 mx-auto shadow shadow post">
+
+        <div class="card-header">
+            <i><small class="text-muted">posted by <a
+                        href="{%url 'user' pk=post.author.pk%}">/{{post.author}}</a></small></i>
+            <!-- <br>
+      <span class="badge rounded-pill bg-primary">Primary</span>
+      <span class="badge rounded-pill bg-secondary">Secondary</span>
+      <span class="badge rounded-pill bg-success">Success</span>
+      <span class="badge rounded-pill bg-danger">Danger</span> -->
+        </div>
+        {% if post.cover_img%}
+        <img loading="lazy" src="{%url 'media'%}{{post.cover_img}}" style="max-height:400px" class="card-img-top">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+
+            <p class="card-text">{{post.body|linebreaks}}</p>
+            <p class="card-text"><small class="text-muted">Last update {{post.lastupdate}} </small></p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end">
+            <div style="display:inline; margin-right:1rem">
+                <form class="addnote" id="post-note{{post.id}}" action="addnote/" method="post">
+                    {% csrf_token %}
+                    <input name="postid" type="hidden" value="{{post.id}}">
+                    <input autocomplete="off" type="text" name="note" placeholder="leave a note!"
+                        style="border: 1px dark;" class="form-control noteaddfield" required>
+                </form>
+            </div>
+            <div>
+                <button id="postibtn{{post.id}}" form="post-note{{post.id}}" type="submit"
+                    class="btn btn-outline-primary" value="add" style=" font-size: 1em">add note!</button>
+            </div>
+            <div>
+                <a href="post/{{post.id}}/comments" class="link-secondary btn btn-link"
+                    style="text-decoration: none;"><small>view notes</small></a>
+            </div>
+            <div>
+                <label>
+                    <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote"
+                        value="true"
+                        {% for key,values in upvotelist.items%} 
+                        {% if key == post %} 
+                        {% if values.response == 'true' %}
+                        checked 
+                        {% endif %} 
+                        {% else %}
+                    
+                        {% endif %}
+                        {% endfor %}>
+                    <img src="{% static 'img/icons/upvote-svgrepo-com.svg' %}" name="upvote" alt="down vote">
+                </label>
+                <label>
+                    <input name="checkbox{{post.id}}" type="checkbox" data-catid="{{ post.id }}" class="vote"
+                        value="false" 
+                        {% for key,values in upvotelist.items%}
+                         {% if key == post %}
+                        {% if values.response == 'false' %} 
+                        checked 
+                        {% endif %} 
+                        {% else %}
+                        {% endif %} 
+                         {% endfor %}>
+                    <img src="{% static 'img/icons/downvote-svgrepo-com.svg' %}" data-upvote="false" name="downvote"
+                        alt="up vote">
+                </label>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+
+<script>
+    $(function () {
+        $(".addnote").submit(function (e) {
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            e.preventDefault();
+            var form = $(this)
+            var url = form.attr('action');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            })
+            form_json_obj = form.serializeArray()
+            jsn_str = JSON.stringify(form_json_obj)
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: url,
+                    data: {
+                        'form': jsn_str,
+                    },
+                    success: function () {
+                        console.log("noted!");
+                        $(':focus').val("")
+                        $(':focus').blur()
+                        var a = form[0].elements[1].value;
+                        var btnid = $("#postibtn" + a);
+                        btnid.html("added !");
+                        btnid.toggleClass("btn-outline-primary", "btn-outline-success");
+                        btnid.prop('disabled', true);
+                        setTimeout(function () {
+                            btnid.toggleClass("btn-outline-primary", "btn-outline-success");
+                            btnid.prop('disabled', false);
+                            btnid.html("add note");
+                        }, 1500);
+                    }
+                }
+            )
+        });
+
+        $(".vote").change(function () {
+            if ($(this).prop('checked'))
+                resp = $(this).val()
+            else
+                resp = 'unset'
+
+            catid = $(this).attr("data-catid")
+
+            $.ajax(
+                {
+                    type: "GET",
+                    url: "{%url 'vote' %}",
+                    data: {
+                        post_id: catid,
+                        res: resp
+                    },
+                    success: function (data) {
+                        console.log("success")
+
+                    }
+                })
+        });
+    });
+</script>
+
+{% endblock %}

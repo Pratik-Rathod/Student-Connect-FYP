@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{%block body%}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %} {{ message.tags }} {% endif %} alert-warning alert-dismissible fade show"
+        role="alert">
+        <strong>Error</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<br>
+<div class="shadow-lg card mr-auto pr-10 p-3 lgncrd row g-3 align-items-center" style="max-width: 405px;">
+    <div class="card-body">
+        <h2 class="card-title">Welcome!</h2>
+        <form id="register" method="POST" action="/registerhandler/" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input name="email" type="email" class="form-control shadow-sm" id="email" aria-describedby="emailHelp"
+                    placeholder="example@gmail.com" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+                <div id="email" class="invalid-feedback">
+                    Enter valid email
+                </div>
+                <div id="email" class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="userid">User ID</label>
+                <input name="userid" pattern="[A-Za-z0-9]+" minlength="3" type="text" required
+                    class="form-control shadow-sm" id="userid" placeholder="user123">
+                <div id="userid" class="invalid-feedback">
+                    Enter valid username
+                </div>
+                <div id="userid" class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div id="userid" class="invalid-feedback">
+                Enter user ID email
+            </div>
+            <div id="userid" class="valid-feedback">
+                Looks good!
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input name="password" minlength="4" type="password" required class="form-control shadow-sm" id="pass"
+                    placeholder="Password">
+                    <div id="validationServerPasswordFeedback" class="invalid-feedback">
+                        Password must be over 4 characters.
+                    </div>
+                    <div id ="validationServerPasswordFeedback" class="valid-feedback">
+                        Looks good!
+                    </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Re-enter Password</label>
+                <input name="cpassword" minlength="4" type="password" required class="form-control shadow-sm" id="cpass"
+                    placeholder="Password">
+            </div>
+            <br>
+            <button type="submit" class=" shadow btn btn-outline-primary btn"
+                style="width: 100%;"><b>Register</b><span></button>
+
+            <br>
+            <br>
+            <label class="form-text text-muted">Already have an account ? <a class="text-decoration-none"
+                    href="{% url 'login'%}">
+                    LOGIN</a></label>
+            <br>
+        </form>
+    </div>
+</div>
+
+<!-- <script>
+    $(document).ready(function () {
+        var check = false
+        $("#cpass").keyup(function () {
+            if ($("#pass").val() != $("#cpass").val()) {
+                check = true
+            } else {
+                check = false
+            }
+        })
+        $("form").submit(function (e) {
+            if (check) {
+                e.preventDefault();
+                event.stopPropagation()
+            }
+        });
+    });
+</script> -->
+{%endblock%}
