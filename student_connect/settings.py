@@ -87,12 +87,13 @@ WSGI_APPLICATION = 'student_connect.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#setup upyour postgresql and add your credentials 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'student_connect_app', 
+        'NAME': 'yourappname', 
         'USER': 'postgres', 
-        'PASSWORD': 'pratik',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1', 
         'PORT': '5432',
     }
