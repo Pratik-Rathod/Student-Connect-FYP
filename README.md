@@ -38,14 +38,22 @@ This project used a software development methodology that followed the Agile pri
 * Compliance: Comply with relevant laws and regulations when handling user data.
 
 ## Results
+### some snapshot of project
 
-* <img src="./snapshot/home.png" width="800" height="500">
-* <img src="./snapshot/register.png" width="800" height="500">
-* <img src="./snapshot/login.png" width="800" height="500">
-* <img src="./snapshot/register.png" width="800" height="500">
-* <img src="./snapshot/reset.png" width="800" height="500">
-* <img src="./snapshot/mailverify.png" width="800" height="500">
-* <img src="./snapshot/mailsent.png" width="800" height="500">
+
+<img src="./snapshot/home.png" width="800" height="500">
+
+<img src="./snapshot/register.png" width="800" height="500">
+
+<img src="./snapshot/login.png" width="800" height="500">
+
+<img src="./snapshot/register.png" width="800" height="500">
+
+<img src="./snapshot/reset.png" width="800" height="500">
+
+<img src="./snapshot/mailverify.png" width="800" height="500">
+
+<img src="./snapshot/mailsent.png" width="800" height="500">
 
 ## Conclusion
 The sole purpose of this project is to develop my skills and seek new challenges.
