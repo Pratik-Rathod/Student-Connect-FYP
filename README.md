@@ -29,7 +29,6 @@ This project used a software development methodology that followed the Agile pri
 * Comment: Allow users to comment on content and engage in discussion with other users.
 * Share: Allow users to share content on the site with their social network or other platforms.
 * Responsive design: The platform is designed to be mobile-friendly and accessible on a variety of devices, including desktops, laptops, tablets, and smartphones.
-* Connect: Allow users to connect with other users and build a network of peers and collaborators.
 * Settings: Allow users to customize their account settings, such as their profile information and notification preferences.
 * Email authentication: Allow users to verify their email address and confirm their account through email authentication.
 * Password reset: Allow users to reset their password through email authentication.
